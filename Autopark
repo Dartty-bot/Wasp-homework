@@ -1,1 +1,203 @@
-hj
+using DZ;
+using Microsoft.VisualBasic;
+using System;
+using System.Runtime.CompilerServices;
+using System.Runtime.ConstrainedExecution;
+using System.Security.Cryptography.X509Certificates;
+
+namespace DZ
+{
+    public class Car
+    {
+        string? Model;
+        int Power;
+        int Year;
+        public Car()
+        {
+            Console.WriteLine("Введите год машины");
+            Year = Convert.ToInt32(Console.ReadLine());
+            
+            Console.WriteLine("Введите мощность");
+            Power = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Введите назмание модели");
+            Model = Console.ReadLine();
+        }
+        public override string ToString()
+        {
+            return Year + " " + Power + " "  + Model;  
+        }
+    }
+
+    public class PassengerCar : Car
+    {
+        int CountPeople;
+        Dictionary<int, string> book = new Dictionary<int, string>();
+        public PassengerCar()
+        {
+            Console.WriteLine("Введите количество людей");
+            CountPeople = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Введите количество деталей");
+            int n = Convert.ToInt32(Console.ReadLine());
+            book = new Dictionary<int, string>();
+            for (int i = 0; i < n; i++)
+            {
+                Console.WriteLine("Введите год замны и название детали");
+                book.Add(Convert.ToInt32(Console.ReadLine()), Console.ReadLine());
+            }
+
+            int question;
+            Console.WriteLine("Добавить деталь? (1 or 0)");
+            question = Convert.ToInt32(Console.ReadLine());
+            while (question > 0)
+            {
+                Console.WriteLine("Введите год замены");
+                int year1 = Convert.ToInt32(Console.ReadLine());
+                Console.WriteLine("Введите название детали");
+                string detal1 = Console.ReadLine();
+                book.Add(year1, detal1);
+                Console.WriteLine("Добавить деталь? (1 or 0)");
+                question = Convert.ToInt32(Console.ReadLine());
+            }
+
+            int question2;
+            Console.WriteLine("Хотите получить деталь по году замены? (1 or 0)");
+            question2 = Convert.ToInt32(Console.ReadLine());
+            while (question2 > 0)
+            {
+                int key;
+                Console.WriteLine("Введите год замены");
+                key = Convert.ToInt32(Console.ReadLine());
+                Console.WriteLine(book[key]);
+                Console.WriteLine("Хотите ещё? (1 or 0)");
+                question2 = Convert.ToInt32(Console.ReadLine());
+            }
+
+            int question3;
+            Console.WriteLine("Хотите получить деталь по году замены? (1 or 0)");
+            question3 = Convert.ToInt32(Console.ReadLine());
+            while (question3 > 0)
+            {
+                foreach (var person in book)
+                {
+                    Console.WriteLine($"Год: {person.Key}  Деталь: {person.Value}");
+                }
+                Console.WriteLine("Хотите ещё? (1 or 0)");
+                question3 = Convert.ToInt32(Console.ReadLine());
+            }
+        }
+        public override string ToString()
+        {
+            return base.ToString() + " "+ CountPeople;
+        }
+    }
+
+
+    public class Truck : Car
+    {
+        int maxload;
+        string? fullname;
+        Dictionary<int, string> cargo = new Dictionary<int, string>();
+        public Truck()
+        {
+            Console.WriteLine("Введите максимальную грузоподъемность");
+            maxload = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Введите ФИ водителя ");
+            fullname = Console.ReadLine();
+            cargo = new Dictionary<int, string>();
+            Console.WriteLine("Введите количество грузов");
+            int n = Convert.ToInt32(Console.ReadLine());
+            for (int i = 0; i < n; i++)
+            {
+                Console.WriteLine("Введите вес груза и его название (с новой строки)");
+                cargo.Add(Convert.ToInt32(Console.ReadLine()), Console.ReadLine());
+            }
+
+            int question1;
+            Console.WriteLine("Изменить водителя? (1 or 0)");
+            question1 = Convert.ToInt32(Console.ReadLine());
+            while (question1 > 0)
+            {
+                Console.WriteLine("Введите новое имя");
+                string newname = Console.ReadLine();
+                fullname = newname;
+                Console.WriteLine("Хочите ещё? (1 or 0)");
+                question1 = Convert.ToInt32(Console.ReadLine());
+            }
+
+            int question2;
+            Console.WriteLine("Добавить, нинада, убрать? (1 or 0 or -1)");
+            question2 = Convert.ToInt32(Console.ReadLine());
+            while (question2 != 0)
+            {
+
+                int ves;
+                string nazvanie;
+                Console.WriteLine("");
+                ves = Convert.ToInt32(Console.ReadLine());
+                Console.WriteLine("");
+                nazvanie = Console.ReadLine();
+                if (question1 > 0) cargo.Add(ves, nazvanie);
+                else cargo.Remove(ves);
+                Console.WriteLine("Хотите ещё? (1 or 0 or -1)");
+                question2 = Convert.ToInt32(Console.ReadLine());
+            }
+
+            int question3;
+            Console.WriteLine("Печатать всю книг? (1 or 0)");
+            question3 = Convert.ToInt32(Console.ReadLine());
+            while (question3 > 0)
+            {
+                foreach (var person in cargo)
+                {
+                    Console.WriteLine($"Вес: {person.Key}  Название: {person.Value}");
+                }
+                Console.WriteLine("Хотите ещё? (1 or 0)");
+                question3 = Convert.ToInt32(Console.ReadLine());
+            }
+        }
+        public override string ToString()
+        {
+            return base.ToString() + " " + maxload + " " + fullname;
+        }
+    }
+
+
+    public class Autopark : Car
+    {
+        public string? NameAutopark;
+        public List<Car> autopark_cars = new List<Car>() { };
+        public Autopark()
+        {
+            Console.WriteLine("Введите название парка");
+            NameAutopark = Console.ReadLine();
+            Console.WriteLine("Введите количество машин");
+            int n = Convert.ToInt32(Console.ReadLine());
+            for (int i = 0; i < n; i++)
+            {
+                var car = new Car();
+                autopark_cars.Add(car);
+            }
+        }
+        public override string ToString()
+        {
+            Car car = new Car();
+            PassengerCar passenger = new PassengerCar();
+            Truck truck = new Truck();
+            return car.ToString() + passenger.ToString() + truck.ToString();
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        { 
+            var FirstA = new Autopark();   // Добовляем объекты
+            var FirstP = new PassengerCar();
+            var FirstT = new Truck();
+            Console.WriteLine(FirstP.ToString());
+            Console.WriteLine(FirstT.ToString());
+            Console.WriteLine(FirstA.ToString());
+            
+        }
+    }
+}
