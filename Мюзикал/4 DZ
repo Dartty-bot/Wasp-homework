@@ -1,0 +1,110 @@
+using System;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using System.Xml;
+
+namespace dz4
+{
+    interface IStoreItem
+    {
+        double Price { get; set; }
+        void DiscountPrice(int percent)
+        {
+            Price = Price * (percent);
+        }
+    }
+
+    class Disk : IStoreItem
+    {
+        public string name;
+        public string genre;
+        public int burnCount;
+        public Disk(string name, string genre)
+        {
+        }
+
+        public virtual int DiskSize { get; set; }
+
+        public virtual void Burn(params string[] values)
+        {
+        }
+        double IStoreItem.Price { get; set; }
+
+        void IStoreItem.DiscountPrice(int percent)
+        {
+        }
+    }
+
+    class Audio : Disk
+    {
+        string artist;
+        string recordingStudio;
+        int songsNumber = 0;
+        public Audio(string artist, string recordingStudio, int songsNumber, string name, string genre) : base(name, genre)
+        {
+
+        }
+        public override int DiskSize { get => songsNumber * 8; }
+        public override void Burn(params string[] values)
+        {
+            artist = values[0];
+            recordingStudio = values[1];
+            songsNumber += 1;
+        }
+        public override string ToString()
+        {
+            return name + genre + artist + recordingStudio + songsNumber + burnCount;
+
+        }
+    }
+
+    class DVD : Disk
+    {
+        string producer;
+        string filmCompany;
+        int minutesCount;
+        public DVD(string producer, string filmCompany, int minutesCount, string name, string genre) : base(name, genre)
+        {
+
+        }
+        public override int DiskSize { get => (minutesCount / 64) * 2; }
+        public override void Burn(params string[] values)
+        {
+            base.Burn(values);
+        }
+        public override string ToString()
+        {
+            return name + genre + producer + filmCompany + minutesCount + burnCount;
+        }
+    }
+    class Store
+    {
+        string storeName;
+        string address;
+        List<Audio> audios = new List<Audio>();
+        List<DVD> dvds = new List<DVD>();
+        public Store(string storeName, string address)
+        {
+        }
+        public override string ToString()   
+        {
+            foreach(Audio audio in audios)
+            {
+                return audio.ToString();   // он ведь должен вызывать тустринг из класса аудио, а там он возвращает стринг
+            }
+            foreach(DVD d in dvds)
+            {
+                return d.ToString();   // поэтому я не понимаю почуму не происходит перегрузки метода
+            }
+        }
+
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+
+        }
+    }
+}
