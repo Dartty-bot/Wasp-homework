@@ -90,12 +90,13 @@ namespace dz4
         {
             foreach(Audio audio in audios)
             {
-                return audio.ToString();   // он ведь должен вызывать тустринг из класса аудио, а там он возвращает стринг
+                audio.ToString();  
             }
             foreach(DVD d in dvds)
             {
-                return d.ToString();   // поэтому я не понимаю почуму не происходит перегрузки метода
+                d.ToString();   
             }
+            return "";
         }
 
     }
